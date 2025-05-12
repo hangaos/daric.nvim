@@ -1,0 +1,6 @@
+if exists("g:loaded_daric_theme") && g:loaded_daric_theme
+  finish
+endif
+let g:loaded_daric_theme = 1
+
+lua require('daric').load()
