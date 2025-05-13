@@ -1,43 +1,67 @@
 local M = {}
 
 M.colors = {
-	-- Core Background & Foreground
-	bg = "#1A1D24", -- Một màu xám rất đậm, tối hơn nord0 (#2E3440) đáng kể
-	fg = "#CFD7E5", -- Hơi xám hơn và dịu hơn nord4 (#D8DEE9) một chút
+	-- Daric Core Colors
+	bg = "#1A1D24", -- Màu nền siêu tối của Daric
+	fg = "#CFD7E5", -- Màu chữ chính của Daric (hơi xám hơn Nord fg)
 
-	-- Supporting Backgrounds
-	bg_dark = "#161920", -- Tối hơn bg chính, cho các thành phần ít nổi bật
-	bg_light = "#242831", -- Sáng hơn bg chính, cho viền hoặc nền nổi bật nhẹ
-	bg_visual = "#3B4252", -- nord1 (màu nền của Nord cho visual selection)
-	bg_cursorline = "#23272F", -- Nền cho cursorline, gần với bg_light
-
-	-- Supporting Foregrounds
-	fg_alt = "#B8C0CC", -- Xám hơn fg chính, cho text phụ
-	fg_dark = "#7E889A", -- Xám đậm, cho comment, text rất mờ
-	fg_gutter = "#4C566A", -- nord3, cho line numbers, sign column
-
-	-- Nord Palette (giữ lại để tham khảo và sử dụng trực tiếp nếu cần)
-	nord0 = "#2E3440",
+	-- Nord Palette (lấy từ nordic.nvim hoặc Nord spec, có thể điều chỉnh)
+	nord0 = "#2E3440", -- Polar Night (Nền gốc Nord)
 	nord1 = "#3B4252",
 	nord2 = "#434C5E",
-	nord3 = "#4C566A",
-	nord4 = "#D8DEE9",
+	nord3 = "#4C566A", -- Dùng cho comment, UI mờ
+
+	nord4 = "#D8DEE9", -- Snow Storm (Chữ gốc Nord)
 	nord5 = "#E5E9F0",
-	nord6 = "#ECEFF4",
+	nord6 = "#ECEFF4", -- Sáng nhất
 
-	-- Aurora & Frost (màu nhấn)
-	red = "#BF616A", -- nord11
-	orange = "#D08770", -- nord12
-	yellow = "#EBCB8B", -- nord13
-	green = "#A3BE8C", -- nord14
-	cyan = "#88C0D0", -- nord8 (Frost - Light Blue/Cyan)
-	blue = "#81A1C1", -- nord9 (Frost - Medium Blue)
-	magenta = "#B48EAD", -- nord15 (Purple/Magenta)
+	nord7 = "#8FBCBB", -- Frost - Teal/Greenish Cyan
+	nord8 = "#88C0D0", -- Frost - Light Blue/Cyan
+	nord9 = "#81A1C1", -- Frost - Medium Blue
+	nord10 = "#5E81AC", -- Frost - Darker Blue
 
-	-- Specific UI elements
-	comment = "#6E7B91", -- Xám xanh dương nhạt, tối và dịu hơn nord3
+	nord11 = "#BF616A", -- Aurora - Red
+	nord12 = "#D08770", -- Aurora - Orange
+	nord13 = "#EBCB8B", -- Aurora - Yellow
+	nord14 = "#A3BE8C", -- Aurora - Green
+	nord15 = "#B48EAD", -- Aurora - Purple/Magenta
+
+	-- Đặt tên gợi nhớ hơn cho các màu nhấn Daric (có thể giống hệt Nord hoặc đã được tinh chỉnh)
+	red = M.colors.nord11,
+	orange = M.colors.nord12,
+	yellow = M.colors.nord13,
+	green = M.colors.nord14,
+	cyan = M.colors.nord8,
+	blue = M.colors.nord9,
+	magenta = M.colors.nord15,
+
+	-- Màu cho các UI elements dựa trên palette
+	bg_dark = "#161920",
+	bg_light = "#242831",
+	bg_visual = M.colors.nord1,
+	bg_cursorline = "#23272F",
+
+	fg_alt = "#B8C0CC",
+	fg_dark = M.colors.nord3, -- Dùng nord3 cho comment mặc định nếu không có màu riêng
+	fg_gutter = M.colors.nord3,
+
+	comment = M.colors.nord3, -- Hoặc một màu xám dịu hơn nếu nord3 vẫn sáng
 
 	none = "NONE",
 }
+-- Đảm bảo các màu được gán đúng (ví dụ trên có self-reference lỗi)
+-- Cách đúng:
+M.colors.red = M.colors.nord11
+M.colors.orange = M.colors.nord12
+M.colors.yellow = M.colors.nord13
+M.colors.green = M.colors.nord14
+M.colors.cyan = M.colors.nord8
+M.colors.blue = M.colors.nord9
+M.colors.magenta = M.colors.nord15
+M.colors.comment = M.colors.nord3 -- Hoặc "#6E7B91" như trước
+M.colors.fg_dark = M.colors.nord3
+M.colors.fg_gutter = M.colors.nord3
+M.colors.bg_visual = M.colors.nord1
+-- Cần định nghĩa lại các màu như bg_dark, bg_light, bg_cursorline, fg_alt nếu chúng không phải là màu Nord gốc
 
 return M
