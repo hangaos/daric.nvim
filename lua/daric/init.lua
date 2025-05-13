@@ -36,7 +36,7 @@ function M.load()
 	if vim.g.colors_name == "daric" and not M.is_reloading then
 		return
 	end
-	M.is_reloading = false -- Reset flag
+	M.is_reloading = false
 
 	vim.cmd("hi clear")
 	if vim.fn.exists("syntax_on") then
@@ -49,8 +49,19 @@ function M.load()
 	local palette_module = require("daric.palette")
 	local colors = vim.tbl_deep_extend("force", palette_module.colors, M.config.override_palette or {})
 
-	require("daric.highlights").apply(colors, M.config)
-	require("daric.integrations").apply(colors, M.config)
+	local highlights_ok, highlights_module = pcall(require, "daric.highlights")
+	if highlights_ok and highlights_module and highlights_module.apply then
+		highlights_module.apply(colors, M.config)
+	else
+		vim.notify("Daric: Could not load core highlights module.", vim.log.levels.ERROR)
+	end
+
+	local integrations_ok, integrations_module = pcall(require, "daric.integrations")
+	if integrations_ok and integrations_module and integrations_module.apply then
+		integrations_module.apply(colors, M.config)
+	else
+		vim.notify("Daric: Could not load integrations module.", vim.log.levels.WARN)
+	end
 
 	if M.config.override_highlights then
 		for group, hl_opts in pairs(M.config.override_highlights) do
@@ -69,18 +80,16 @@ function M.load()
 	vim.api.nvim_command("doautocmd ColorScheme daric")
 end
 
--- Function to allow live reloading of the theme for development
 function M.reload()
 	M.is_reloading = true
-	local persisted_config = vim.deepcopy(M.config) -- Persist current config options
+	local persisted_config = vim.deepcopy(M.config)
 
-	-- Clear Lua module cache for theme files
 	package.loaded["daric.palette"] = nil
 	package.loaded["daric.highlights"] = nil
 	package.loaded["daric.integrations"] = nil
-	package.loaded["daric"] = nil -- or package.loaded["daric.init"]
+	package.loaded["daric.init"] = nil
+	package.loaded["daric"] = nil
 
-	-- Restore config before loading
 	M.config = persisted_config
 	M.load()
 	vim.notify("🎨 Daric theme reloaded!", vim.log.levels.INFO, { title = "Daric Theme" })

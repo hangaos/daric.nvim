@@ -3,7 +3,7 @@ local M = {}
 local function set_hl(group, opts)
 	local success, err = pcall(vim.api.nvim_set_hl, 0, group, opts)
 	if not success then
-		vim.notify("Error setting highlight for " .. group .. ": " .. tostring(err), vim.log.levels.ERROR)
+		-- vim.notify("Error setting highlight for " .. group .. ": " .. tostring(err), vim.log.levels.WARN)
 	end
 end
 
@@ -25,7 +25,7 @@ function M.apply(C, config)
 	set_hl("Visual", { bg = C.bg_visual })
 	set_hl("VisualNOS", { link = "Visual" })
 
-	set_hl("Search", { fg = C.bg, bg = C.bg_search, bold = true })
+	set_hl("Search", { fg = C.bg, bg = C.bg_search_result, bold = true })
 	set_hl("IncSearch", { fg = C.bg, bg = C.orange, bold = true })
 	set_hl("Substitute", { fg = C.bg, bg = C.green, bold = true })
 
@@ -34,7 +34,7 @@ function M.apply(C, config)
 	set_hl("PmenuSbar", { bg = C.nord1 })
 	set_hl("PmenuThumb", { bg = C.nord3 })
 
-	set_hl("Folded", { fg = C.fg_dark, bg = C.bg_dark, italic = config.italic_comments })
+	set_hl("Folded", { fg = C.comment, bg = C.bg_dark, italic = config.italic_comments })
 	set_hl("FoldColumn", { fg = C.fg_gutter, bg = C.bg })
 
 	set_hl("DiffAdd", { fg = C.green, bg = C.bg_dark })
@@ -163,7 +163,7 @@ function M.apply(C, config)
 	set_hl("Underlined", { underline = true })
 	set_hl("Todo", { fg = C.bg, bg = C.yellow, bold = true })
 
-	local diag_underline_gui = config.underline_errors and "undercurl" or C.none
+	local diag_underline_gui_val = config.underline_errors and "undercurl" or C.none
 	set_hl("DiagnosticError", { fg = C.red })
 	set_hl("DiagnosticWarn", { fg = C.yellow })
 	set_hl("DiagnosticInfo", { fg = C.cyan })
@@ -172,10 +172,10 @@ function M.apply(C, config)
 	set_hl("LspDiagnosticsDefaultWarning", { link = "DiagnosticWarn" })
 	set_hl("LspDiagnosticsDefaultInformation", { link = "DiagnosticInfo" })
 	set_hl("LspDiagnosticsDefaultHint", { link = "DiagnosticHint" })
-	set_hl("LspDiagnosticsUnderlineError", { gui = diag_underline_gui, sp = C.red })
-	set_hl("LspDiagnosticsUnderlineWarning", { gui = diag_underline_gui, sp = C.yellow })
-	set_hl("LspDiagnosticsUnderlineInformation", { gui = diag_underline_gui, sp = C.cyan })
-	set_hl("LspDiagnosticsUnderlineHint", { gui = diag_underline_gui, sp = C.green })
+	set_hl("LspDiagnosticsUnderlineError", { gui = diag_underline_gui_val, sp = C.red })
+	set_hl("LspDiagnosticsUnderlineWarning", { gui = diag_underline_gui_val, sp = C.yellow })
+	set_hl("LspDiagnosticsUnderlineInformation", { gui = diag_underline_gui_val, sp = C.cyan })
+	set_hl("LspDiagnosticsUnderlineHint", { gui = diag_underline_gui_val, sp = C.green })
 end
 
 return M
